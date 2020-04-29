@@ -17,6 +17,8 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(express.static("public", { "extensions": "html"}));
+
 // Create mongoose connection
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/trackerdb", {
     useNewUrlParser: true,
@@ -28,4 +30,4 @@ app.use(apiRoutes);
 
 app.listen(PORT, () => {
     console.log(`App running on port: http://localhost:${PORT}`);
-})
+});
