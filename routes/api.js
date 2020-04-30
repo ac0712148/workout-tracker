@@ -8,11 +8,10 @@ const db = require("../models");
 router.post("/api/workouts", (req, res) => {
     // CODE HERE
     db.Workout.create(req.body)
-        .then(dbWorkout => {
-            console.log(dbWorkout);
-            res.json(dbWorkout);
+        .then((workout) => {
+            res.json(workout);
         }).catch((err) => {
-            res.status(400).json(err);
+            res.json(err);
         });
 });
 
@@ -20,8 +19,13 @@ router.post("/api/workouts", (req, res) => {
 // respond with the updated workout json
 router.put("/api/workouts/:id", (req, res) => {
     // CODE HERE
-    console.log("router.put")
-    console.log(req.body);
+    //findByIdAndUpdate(//ID,//the update to use)
+    db.Workout.findByIdAndUpdate(req.params.id, { $push: { exercises: req.body } })
+        .then((workout) => {
+            res.json(workout);
+        }).catch((err) => {
+            res.json(err);
+        });
 });
 
 // Respond with json for all the workouts in an array.
@@ -32,28 +36,32 @@ router.get("/api/workouts", (req, res) => {
             res.json(dbWorkout)
         })
         .catch((err) => {
-            res.status(400).json(err);
+            res.json(err);
         });
 });
 
 // Respond with json array containing the last 7 workouts
 router.get("/api/workouts/range", (req, res) => {
     // CODE HERE
-    db.Workout.find({}).limit(7).sort({ day: -1 })
+    db.Workout.find({}).sort({ day: -1 }).limit(7)
         .then((dbWorkout) => {
             res.json(dbWorkout);
-            console.log(dbWorkout);
         })
         .catch(err => {
             res.json(err);
         });
 });
-
+// Not Used
 // Delete workout with id matching id in the request body.
-router.delete("/api/workouts", (req, res) => {
-    // CODE HERE
-    console.log("router.delete")
-    console.log(req.body);
-});
+// router.delete("/api/workouts", (req, res) => {
+//     // CODE HERE
+//     db.Workout.deleteOne({ _id: req.body.id })
+//         .then((dbWorkout) => {
+//             res.json(dbWorkout);
+//         })
+//         .catch(err => {
+//             res.json(err);
+//         });
+// });
 
 module.exports = router;
