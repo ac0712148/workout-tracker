@@ -1,8 +1,5 @@
 const express = require("express");
 const logger = require("morgan");
-
-// import mongoose
-
 const mongoose = require("mongoose");
 
 const apiRoutes = require("./routes/api");
@@ -13,10 +10,8 @@ const app = express();
 
 // use logging middleware
 app.use(logger("dev"));
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 app.use(express.static("public", { "extensions": "html" }));
 
 // Create mongoose connection
