@@ -1,15 +1,12 @@
 const router = require("express").Router();
-
 const db = require("../models");
 
-// TODO: and add code to the routes so that the app functions correctly
-
-// Creates a workout using data in the request body.
 router.post("/api/workouts", (req, res) => {
     // CODE HERE
     db.Workout.create(req.body)
-        .then((workout) => {
-            res.json(workout);
+        .then((data) => {
+            console.log(data)
+            res.json(data);
         }).catch((err) => {
             res.json(err);
         });
@@ -20,11 +17,16 @@ router.post("/api/workouts", (req, res) => {
 router.put("/api/workouts/:id", (req, res) => {
     // CODE HERE
     //findByIdAndUpdate(//ID,//the update to use)
-    db.Workout.findByIdAndUpdate(req.params.id, { $push: { exercises: req.body } })
-        .then((workout) => {
-            res.json(workout);
-        }).catch((err) => {
-            res.json(err);
+    db.Workout.update(
+        {_id: req.params.id},
+        { $push: { exercises: req.body } })
+        .then((data) => {
+            console.log(data);
+            res.send(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send(err);
         });
 });
 
